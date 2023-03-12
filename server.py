@@ -1,21 +1,9 @@
 import asyncio
 import websockets
+import read
 
-async def handler(websocket, path):
-    last_data = ""
-    while True:
-        data = await websocket.recv()
-        print(data)
-        reply = f"Data received as {data}"
-        await websocket.send(reply)
-        if last_data == "":
-            await websocket.send("Before the Data, there was no Data")
-        else:
-            reply_of_last = f"Last data was {last_data}"
-            await websocket.send(reply_of_last)
-        last_data = data
+async def start_server():
+    async with websockets.serve(read.read, "localhost", 8000):
+        await asyncio.Future()
 
-start_server = websockets.serve(handler, "localhost", 8000)
-
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
+asyncio.run(start_server())

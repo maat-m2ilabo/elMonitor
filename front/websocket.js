@@ -1,20 +1,11 @@
 const socket = new WebSocket('ws://localhost:8000');
+const targetFile = "exampleFiles/test.txt"
 
-
-//socket.addEventListener('open', function (event) {
-//    socket.send('Connection Established');
-//});
+socket.addEventListener('open', function (event) {
+    socket.send(targetFile);
+});
 
 socket.addEventListener('message', function (event) {
-    console.log("le serveur a dit : " + event.data);
-}); 
-
-var i = 1
-const contactServer = () => {
-    socket.send(i);
-    i++;
-}
-
-function test() {
-    socket.send("ahah");
-}
+    var log = document.getElementById("log");
+    log.innerHTML = event.data.replace(/\n/g, "<br>");
+});
